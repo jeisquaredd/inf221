@@ -34,21 +34,3 @@ if (isset($_POST['adduser'])) {
         $error = "Passwords did not match. Please try again.";
     }
 }
-
-// To be inserted in the database.php
-
-function signupUser($username, $password)
-{
-    $con = $this->opencon();
-    $con->prepare("INSERT INTO users (user_name, user_pass) VALUES (?, ?)")->execute([$username, $password]);
-        return $con->lastInsertId();
-}
-
-function insertAddress($user_id, $city, $province)
-{
-    $con = $this->opencon();
-    return $con->prepare("INSERT INTO user_address (user_id, city, province) VALUES (?, ?, ?)")->execute([$user_id, $city, $province]);
-      
-}
-
-
