@@ -167,3 +167,39 @@ if (empty($id = $_POST['id'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
+<?php
+function updateUser($user_id, $firstname, $lastname, $birthday,$sex, $username, $password) {
+    try {
+        $con = $this->opencon();
+        $con->beginTransaction();
+        $query = $con->prepare("UPDATE users SET user_firstname=?, user_lastname=?,user_birthday=?, user_sex=?,user_name=?, user_pass=? WHERE user_id=?");
+        $query->execute([$firstname, $lastname,$birthday,$sex,$username, $password, $user_id]);
+        // Update successful
+        $con->commit();
+        return true;
+    } catch (PDOException $e) {
+        // Handle the exception (e.g., log error, return false, etc.)
+         $con->rollBack();
+        return false; // Update failed
+    }
+}
+
+function updateUserAddress($user_id, $street, $barangay, $city, $province) {
+    try {
+        $con = $this->opencon();
+        $con->beginTransaction();
+        $query = $con->prepare("UPDATE user_address SET street=?, barangay=?, city=?, province=? WHERE user_id=?");
+        $query->execute([$street, $barangay, $city, $province, $user_id]);
+        $con->commit();
+        return true; // Update successful
+    } catch (PDOException $e) {
+        // Handle the exception (e.g., log error, return false, etc.)
+        $con->rollBack();
+        return false; // Update failed
+    }
+     
+}
+?>
